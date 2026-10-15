@@ -1,4 +1,4 @@
-# AI Powered Predictive Maintenance for IoT Devices
+﻿# AI Powered Predictive Maintenance for IoT Devices
 
 A student project that learns from fictional temperature, vibration and current readings to flag a machine failure within the next ten readings. It runs without sensors or industrial equipment and produces a saved Random Forest model, evaluation charts, virtual machine replay, local dashboard and Flask prediction API.
 
@@ -168,7 +168,7 @@ Checks cover strictly future event labels, disjoint machine splits, training-onl
 
 ## GitHub and proof
 
-Follow [the GitHub and proof plan](docs/GITHUB_PROOF_PLAN.md) for repository creation commands, documentation, an honest seven-day learning sequence and a screenshot checklist. This delivered folder is prepared for a repository; it has not been published to GitHub. No commits or screenshots of a GitHub repository are fabricated.
+Follow [the GitHub and proof plan](docs/GITHUB_PROOF_PLAN.md) for repository creation commands, documentation, an honest seven-day learning sequence and a screenshot checklist. Published repository: https://github.com/mohanrajd16092001/AI-Predictive-Maintenance-IoT No commits or screenshots of a GitHub repository are fabricated.
 
 ## Learning outcomes and limits
 
@@ -183,3 +183,4 @@ It is an educational simulation. Sensor behavior, timing and failure mechanisms 
 
 ### Automated checks
 ![All seven project checks passing](images/tests_passed.png)
+

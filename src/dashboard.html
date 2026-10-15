@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Predictive Maintenance Simulation</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6f8;color:#1e303d;font:16px/1.6 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:45px 24px}h1{font-size:38px;line-height:1.2;margin:10px 0 18px}h2{font-size:23px;margin:0 0 18px}.eyebrow{letter-spacing:.14em;font-size:12px;font-weight:700;color:#176b87}p{max-width:820px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:30px 0}.panel{background:white;padding:28px;border:1px solid #d9e2e7;border-radius:12px}label{display:block;margin:14px 0 5px}input{width:100%;padding:11px;font:inherit;border:1px solid #bdccd5;border-radius:6px}button{background:#176b87;color:white;border:0;padding:12px 22px;font:inherit;border-radius:6px;margin-top:20px;cursor:pointer}button:disabled{opacity:.6}#status{font-size:22px;font-weight:650;margin:18px 0 8px}.small{font-size:13px;color:#536875}#scores{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric strong{display:block;font-size:28px}.chart{width:100%;height:auto}.full{grid-column:1/-1}a{color:#176b87}@media(max-width:720px){.grid{grid-template-columns:1fr}h1{font-size:30px}.panel{padding:20px}}
+</style>
+<main>
+<div class="eyebrow">STUDENT PROJECT / SYNTHETIC DATA</div>
+<h1>Predictive maintenance<br>for virtual IoT machines</h1>
+<p>Explore a Random Forest trained on simulated temperature, vibration and current readings. Its target is a failure within the next ten readings, with one simulated minute between readings.</p>
+<p class="small">Sensor patterns and failure events are invented for this demonstration. Scores and results do not establish performance on real equipment. Motor actions are virtual.</p>
+<div class="grid">
+<section class="panel"><h2>Try a sensor reading</h2>
+<form id="form">
+<label for="temperature">Temperature (Celsius)</label><input id="temperature" name="temperature" type="number" step="any" min="-50" max="200" value="35" required>
+<label for="vibration">Vibration (arbitrary simulated units)</label><input id="vibration" name="vibration" type="number" step="any" min="0" max="100" value="0.3" required>
+<label for="current">Current (amps)</label><input id="current" name="current" type="number" step="any" min="0" max="100" value="0.6" required>
+<button type="submit">Predict risk</button>
+</form>
+<p id="status" role="status" aria-live="polite">Ready for a reading</p><p id="details" class="small">Try 80 Celsius, 4.5 vibration units and 1.7 amps to explore the degraded end of the simulated range.</p>
+</section>
+<section class="panel"><h2>Held-out machine evaluation</h2><div id="scores">Loading metrics...</div><p class="small">Precision measures how often alerts are correct. Recall measures how many future-failure windows are detected. Entire machines are kept separate across data splits.</p><img class="chart" src="/images/confusion_matrix.png" alt="Confusion matrix on held-out synthetic machines"></section>
+<section class="panel full"><h2>Replay of an unseen machine</h2><img class="chart" src="/images/failure_prediction.png" alt="Model scores during a held-out synthetic machine's history"><p class="small">The shaded region identifies readings within ten minutes of the recorded synthetic failure. It is included for evaluation and is never a model input. The replay continues after virtual STOP actions to show the original recorded history.</p></section>
+<section class="panel full"><h2>Sensor history</h2><img class="chart" src="/images/sensor_history.png" alt="Simulated temperature, vibration and current over time"></section>
+</div>
+</main>
+<script>
+const statusNode=document.querySelector('#status'), details=document.querySelector('#details');
+document.querySelector('#form').addEventListener('submit',async event=>{
+ event.preventDefault();const button=event.target.querySelector('button');button.disabled=true;
+ try{const payload=Object.fromEntries(new FormData(event.target).entries());for(const key in payload)payload[key]=Number(payload[key]);
+ const response=await fetch('/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const result=await response.json();if(!response.ok)throw Error(result.error);
+ statusNode.textContent=result.failure_predicted?'Failure alert':'No failure alert';statusNode.style.color=result.failure_predicted?'#a04428':'#176b87';
+ details.textContent=`Risk score: ${result.failure_risk_score.toFixed(3)} | Threshold: ${result.threshold} | ${result.motor_action}. This is an uncalibrated model score.`;
+ }catch(error){statusNode.textContent='Prediction unavailable';details.textContent=error.message;}finally{button.disabled=false;}
+});
+fetch('/metrics').then(async response=>{if(!response.ok)throw Error('Metrics unavailable');return response.json();}).then(metrics=>{
+ const container=document.querySelector('#scores');container.textContent='';for(const key of ['precision','recall','f1']){const cell=document.createElement('div');cell.className='metric';const value=document.createElement('strong');value.textContent=(100*metrics.test[key]).toFixed(1)+'%';cell.append(value,document.createTextNode(key));container.append(cell);}
+}).catch(error=>{document.querySelector('#scores').textContent=error.message;});
+</script>
+</html>

@@ -1,0 +1,66 @@
+Saved 16,764 synthetic readings from 80 machines to C:\Users\Mohan Raj D\Documents\Codex\2026-10-15\i-will-feed-a-file-to\outputs\AI-Predictive-Maintenance-IoT\data\iot_sensor_data.csv
+Units: temperature = Celsius; current = A; vibration = arbitrary simulated units.
+Target: failure in the next 10 readings (one simulated minute per reading).
+Random Forest trained. Model and fitted imputer saved together.
+validation {
+  "rows": 2293,
+  "positive_rows": 120,
+  "accuracy": 0.9912778020061055,
+  "precision": 0.8846153846153846,
+  "recall": 0.9583333333333334,
+  "f1": 0.92,
+  "average_precision": 0.9789584154553866,
+  "confusion_matrix": [
+    [
+      2158,
+      15
+    ],
+    [
+      5,
+      115
+    ]
+  ]
+}
+test {
+  "rows": 2384,
+  "positive_rows": 120,
+  "accuracy": 0.9890939597315436,
+  "precision": 0.8455882352941176,
+  "recall": 0.9583333333333334,
+  "f1": 0.8984375,
+  "average_precision": 0.981449849024827,
+  "confusion_matrix": [
+    [
+      2243,
+      21
+    ],
+    [
+      5,
+      115
+    ]
+  ]
+}
+These metrics describe this synthetic generator only.
+2026-01-01 03:54:00 | risk score=0.999 | STOP (simulation only)
+2026-01-01 03:55:00 | risk score=0.995 | STOP (simulation only)
+2026-01-01 03:56:00 | risk score=1.000 | STOP (simulation only)
+2026-01-01 03:57:00 | risk score=1.000 | STOP (simulation only)
+2026-01-01 03:58:00 | risk score=0.996 | STOP (simulation only)
+2026-01-01 03:59:00 | risk score=1.000 | STOP (simulation only)
+2026-01-01 04:00:00 | risk score=1.000 | STOP (simulation only)
+2026-01-01 04:01:00 | risk score=1.000 | STOP (simulation only)
+2026-01-01 04:02:00 | risk score=1.000 | STOP (simulation only)
+2026-01-01 04:03:00 | risk score=1.000 | STOP (simulation only)
+{
+  "machine_id": "SIM-036",
+  "data_source": "synthetic; held-out test machine",
+  "readings_replayed": 244,
+  "alert_readings": 13,
+  "false_alert_readings": 3,
+  "missed_positive_readings": 0,
+  "first_alert": "2026-01-01 03:50:00",
+  "simulated_failure_time": "2026-01-01 04:04:00",
+  "first_alert_lead_minutes": 14.0,
+  "action_mode": "virtual STOP/RUN only; replay does not alter the recorded machine history",
+  "lead_note": "An alert earlier than the 10-reading target window counts as a false positive for this target."
+}

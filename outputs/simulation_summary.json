@@ -1,0 +1,13 @@
+{
+  "machine_id": "SIM-036",
+  "data_source": "synthetic; held-out test machine",
+  "readings_replayed": 244,
+  "alert_readings": 13,
+  "false_alert_readings": 3,
+  "missed_positive_readings": 0,
+  "first_alert": "2026-01-01 03:50:00",
+  "simulated_failure_time": "2026-01-01 04:04:00",
+  "first_alert_lead_minutes": 14.0,
+  "action_mode": "virtual STOP/RUN only; replay does not alter the recorded machine history",
+  "lead_note": "An alert earlier than the 10-reading target window counts as a false positive for this target."
+}
